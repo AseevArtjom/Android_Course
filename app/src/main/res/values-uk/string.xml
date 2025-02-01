@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Перше застосування</string>
+    <string name="button_1">Кнопка 1</string>
+    <string name="button_2">Кнопка 2</string>
+    <string name="button_3">Кнопка 3</string>
+    <string name="message_1">Повідомлення 1</string>
+    <string name="message_2">Повідомлення 2</string>
+    <string name="message_3">Повідомлення 3</string>
+</resources>
