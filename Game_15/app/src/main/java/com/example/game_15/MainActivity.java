@@ -1,6 +1,7 @@
 package com.example.game_15;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -37,6 +38,10 @@ public class MainActivity extends AppCompatActivity {
 
         CreateButtons();
         startTimer();
+    }
+
+    private void ResetGame(){
+        game = new Game_15();
     }
 
     private void CreateButtons() {
@@ -106,17 +111,13 @@ public class MainActivity extends AppCompatActivity {
     private void showWinDialog() {
         int moveCount = game.getMoveCount();
         long elapsedTime = game.getElapsedTime();
-        long minutes = elapsedTime / 60000;
-        long seconds = (elapsedTime % 60000) / 1000;
 
-        String message = String.format("Congratulations! You've solved the puzzle!\n\n" +
-                "Moves: %d\nTime: %02d:%02d", moveCount, minutes, seconds);
+        Intent intent = new Intent(MainActivity.this, GameInfoActivity.class);
+        intent.putExtra("elapsedTime", elapsedTime);
+        intent.putExtra("moveCount", moveCount);
 
-        new AlertDialog.Builder(this)
-                .setTitle("You Win!")
-                .setMessage(message)
-                .setPositiveButton("OK", null)
-                .show();
+        startActivity(intent);
     }
+
 
 }
