@@ -2,6 +2,7 @@ package com.example.game_15;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -16,16 +17,22 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class MainActivity extends AppCompatActivity {
 
-    Game_15 game = new Game_15();
+    Game_15 game;
     private TextView movesTextView;
     private TextView timeTextView;
     private Handler handler = new Handler();
+    private Button exitButton;
+    private boolean isDebugMode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
+
+        SharedPreferences sharedPreferences = getSharedPreferences("GameSettings", MODE_PRIVATE);
+        isDebugMode = sharedPreferences.getBoolean("debug_mode", false);
+        ResetGame();
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -35,13 +42,27 @@ public class MainActivity extends AppCompatActivity {
 
         movesTextView = findViewById(R.id.moves_text);
         timeTextView = findViewById(R.id.time_text);
+        exitButton = findViewById(R.id.exit_button);
+
+        exitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,MenuActivity.class);
+                startActivity(intent);
+            }
+        });
 
         CreateButtons();
         startTimer();
     }
 
     private void ResetGame(){
-        game = new Game_15();
+        if(isDebugMode){
+            game = new Game_15(Game_15.DebugMode.ON);
+        }
+        else{
+            game = new Game_15(Game_15.DebugMode.OFF);
+        }
     }
 
     private void CreateButtons() {

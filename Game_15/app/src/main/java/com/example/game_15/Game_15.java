@@ -1,6 +1,9 @@
 package com.example.game_15;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public class Game_15 {
 
@@ -22,13 +25,23 @@ public class Game_15 {
         }
     }
 
-    private int[][] gameField = {
-            {1, 2, 3, 4},
-            {5, 6, 7, 8},
-            {9, 10, 11, 12},
-            {13, 14, 0, 15}
-    };
+    public enum DebugMode {
+        ON(true),
+        OFF(false);
 
+        private final boolean status;
+
+        DebugMode(boolean status) {
+            this.status = status;
+        }
+
+        public boolean getStatus() {
+            return status;
+        }
+    }
+
+
+    private int[][] gameField = new int[4][4];
     private int[][] winFields = {
             {1, 2, 3, 4},
             {5, 6, 7, 8},
@@ -38,6 +51,40 @@ public class Game_15 {
 
     private int moveCount = 0;
     private long startTime = System.currentTimeMillis();
+
+    public Game_15(DebugMode debugMode) {
+        if (debugMode == DebugMode.OFF) {
+            initializeGame();
+        } else if (debugMode == DebugMode.ON) {
+            int[][] orderedField = {
+                    {1, 2, 3, 4},
+                    {5, 6, 7, 8},
+                    {9, 10, 11, 12},
+                    {13, 14, 0, 15}
+            };
+
+            for (int i = 0; i < 4; i++) {
+                for (int j = 0; j < 4; j++) {
+                    gameField[i][j] = orderedField[i][j];
+                }
+            }
+        }
+    }
+
+
+    private void initializeGame() {
+        List<Integer> numbers = new ArrayList<>();
+        for (int i = 0; i < 16; i++) {
+            numbers.add(i);
+        }
+        Collections.shuffle(numbers);
+
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                gameField[i][j] = numbers.get(i * 4 + j);
+            }
+        }
+    }
 
     public int getValue(int x, int y) {
         return gameField[y][x];
